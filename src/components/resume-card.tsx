@@ -31,7 +31,7 @@ export const ResumeCard = ({
 }: ResumeCardProps) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleClick = (e: any) => {
     if (description) {
       e.preventDefault();
       setIsExpanded(!isExpanded);
@@ -39,8 +39,8 @@ export const ResumeCard = ({
   };
 
   return (
-    <Link
-      href={href || "#"}
+    <div
+      // href={href || "#"}
       className="block cursor-pointer"
       onClick={handleClick}
     >
@@ -51,6 +51,17 @@ export const ResumeCard = ({
               src={logoUrl}
               alt={altText}
               className="object-contain"
+              onClick={(e) => {
+                if (href && href.trim().length > 0) {
+                  try {
+                    const url = new URL(href.trim());
+                    window.open(url, '_blank');
+                  } catch (e) {
+                    // invalid url
+                  }
+                }
+                e.stopPropagation();
+              }}
             />
             <AvatarFallback>{altText[0]}</AvatarFallback>
           </Avatar>
@@ -80,7 +91,7 @@ export const ResumeCard = ({
                   )}
                 />
               </h3>
-              <div className="text-xs sm:text-sm tabular-nums text-muted-foreground text-right">
+              <div className="text-xs text-muted-foreground text-right">
                 {period}
               </div>
             </div>
@@ -105,6 +116,6 @@ export const ResumeCard = ({
           )}
         </div>
       </Card>
-    </Link>
+    </div>
   );
 };
